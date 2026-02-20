@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -5,8 +7,34 @@ import { Label } from "@/components/ui/label";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import GeometricBackground from "@/components/geometric-background";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { loginSchema } from "@/lib/validators/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+type LoginFormFields = z.infer<typeof loginSchema>;
 
 const Login = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginFormFields>({
+    resolver: zodResolver(loginSchema),
+    mode: "onSubmit",
+  });
+
+  const onSubmit = async (data: LoginFormFields) => {
+    try {
+      console.log("Login data:", data);
+      // Add your authentication logic here
+
+      // Simulating a network request for demonstration
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
+  };
   return (
     <div className="flex min-h-screen">
       {/* Left Panel - Geometric Background */}
@@ -92,9 +120,13 @@ const Login = () => {
               <Input
                 type="email"
                 placeholder="you@example.com"
+                {...register("email")}
                 className="h-12 px-4 rounded-xl text-[15px] text-gray-900 bg-white placeholder:text-gray-400 border"
                 style={{ borderColor: "var(--warm-gray)" }}
               />
+              <p className="text-red-500 text-[13px] mt-1">
+                {errors.email?.message}
+              </p>
             </div>
 
             <div>
@@ -119,9 +151,11 @@ const Login = () => {
               <Input
                 type="password"
                 placeholder="Enter your password"
+                {...register("password")}
                 className="h-12 px-4 rounded-xl text-[15px] text-gray-900 bg-white placeholder:text-gray-400 border"
                 style={{ borderColor: "var(--warm-gray)" }}
               />
+              <p>{errors.password?.message}</p>
             </div>
 
             <div className="flex items-center">
@@ -171,5 +205,10 @@ const Login = () => {
     </div>
   );
 };
-
 export default Login;
+function signIn(
+  arg0: string,
+  arg1: { redirect: boolean; email: string; password: string },
+) {
+  throw new Error("Function not implemented.");
+}

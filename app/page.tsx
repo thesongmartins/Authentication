@@ -1,17 +1,15 @@
-// import Login from "./login/page";
-// import Signup from "./signup/page";
-// import Success from "./success/page";
+import Signup from "./signup/page";
+import Success from "./success/page";
 
-// export default function Home() {
-//   return (
-//     <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-//       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-//         <div>
-//           <Login/>
-//           <Signup/>
-//           <Success/>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
+export default function Home() {
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
+      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+        <div>
+          <Signup />
+          <Success />
+        </div>
+      </main>
+    </div>
+  );
+}

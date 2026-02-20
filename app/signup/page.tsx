@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -5,8 +7,22 @@ import { Label } from "@/components/ui/label";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import GeometricBackground from "@/components/geometric-background";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { signupSchema } from "@/lib/validators/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
 
+type SignupFormFields = z.infer<typeof signupSchema>;
 const Signup = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<SignupFormFields>({
+    resolver: zodResolver(signupSchema),
+    mode: "onSubmit",
+  });
+
   return (
     <div className="flex min-h-screen">
       {/* Left Panel - Geometric Background */}
@@ -91,10 +107,14 @@ const Signup = () => {
               </Label>
               <Input
                 type="text"
+                {...register("fullName")}
                 placeholder="John Doe"
                 className="h-12 px-4 rounded-xl text-[15px] text-gray-900 bg-white input-focus placeholder:text-gray-400 border"
                 style={{ borderColor: "var(--warm-gray)" }}
               />
+              <p className="text-red-500 text-[13px] mt-1">
+                {errors.fullName?.message}
+              </p>
             </div>
 
             <div>
@@ -109,10 +129,14 @@ const Signup = () => {
               </Label>
               <Input
                 type="email"
+                {...register("email")}
                 placeholder="you@example.com"
                 className="h-12 px-4 rounded-xl text-[15px] text-gray-900 bg-white input-focus placeholder:text-gray-400 border"
                 style={{ borderColor: "var(--warm-gray)" }}
               />
+              <p className="text-red-500 text-[13px] mt-1">
+                {errors.email?.message}
+              </p>
             </div>
 
             <div>
@@ -127,10 +151,14 @@ const Signup = () => {
               </Label>
               <Input
                 type="password"
+                {...register("password")}
                 placeholder="Create a strong password"
                 className="h-12 px-4 rounded-xl text-[15px] text-gray-900 bg-white input-focus placeholder:text-gray-400 border"
                 style={{ borderColor: "var(--warm-gray)" }}
               />
+              <p className="text-red-500 text-[13px] mt-1">
+                {errors.password?.message}
+              </p>
             </div>
 
             <div>
@@ -145,10 +173,14 @@ const Signup = () => {
               </Label>
               <Input
                 type="password"
+                {...register("confirmPassword")}
                 placeholder="Re-enter your password"
                 className="h-12 px-4 rounded-xl text-[15px] text-gray-900 bg-white input-focus placeholder:text-gray-400 border"
                 style={{ borderColor: "var(--warm-gray)" }}
               />
+              <p className="text-red-500 text-[13px] mt-1">
+                {errors.confirmPassword?.message}
+              </p>
             </div>
 
             <div className="flex items-start">
