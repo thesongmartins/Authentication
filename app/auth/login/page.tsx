@@ -25,16 +25,7 @@ const Login = () => {
     mode: "onSubmit",
   });
 
-  const onSubmit = async (data: LoginFormFields) => {
-    try {
-      console.log("Login data:", data);
-      // TODO: Replace with real API call to backend
-      // e.g. await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, data)
-      await new Promise((resolve) => setTimeout(resolve, 1500));
-    } catch (error) {
-      console.error("Login failed:", error);
-    }
-  };
+  const onSubmit = async (data: LoginFormFields) => {};
 
   return (
     <div className="flex min-h-screen">
