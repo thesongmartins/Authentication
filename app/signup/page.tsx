@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import GeometricBackground from "@/components/geometric-background";
@@ -13,6 +14,7 @@ import { signupSchema } from "@/lib/validators/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 type SignupFormFields = z.infer<typeof signupSchema>;
+
 const Signup = () => {
   const {
     register,
@@ -22,6 +24,17 @@ const Signup = () => {
     resolver: zodResolver(signupSchema),
     mode: "onSubmit",
   });
+
+  const onSubmit = async (data: SignupFormFields) => {
+    try {
+      console.log("Signup data:", data);
+      // TODO: Replace with real API call to backend
+      // e.g. await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/signup`, data)
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+    } catch (error) {
+      console.error("Signup failed:", error);
+    }
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -94,7 +107,7 @@ const Signup = () => {
           </div>
 
           {/* Sign Up Form */}
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <Label
                 className="block text-[13px] font-medium mb-2 uppercase"
@@ -218,14 +231,23 @@ const Signup = () => {
 
             <Button
               type="submit"
-              className="w-full h-14 rounded-full text-[15px] font-semibold"
+              disabled={isSubmitting}
+              className="w-full h-14 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2"
               style={{
                 backgroundColor: "var(--burgundy)",
                 color: "var(--gold)",
                 boxShadow: "0 2px 8px rgba(139, 21, 56, 0.16)",
+                opacity: isSubmitting ? 0.7 : 1,
               }}
             >
-              Create Account
+              {isSubmitting ? (
+                <>
+                  <Spinner className="size-4" />
+                  Creating Account...
+                </>
+              ) : (
+                "Create Account"
+              )}
             </Button>
           </form>
 

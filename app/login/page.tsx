@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Spinner } from "@/components/ui/spinner";
 import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import GeometricBackground from "@/components/geometric-background";
@@ -27,14 +28,14 @@ const Login = () => {
   const onSubmit = async (data: LoginFormFields) => {
     try {
       console.log("Login data:", data);
-      // Add your authentication logic here
-
-      // Simulating a network request for demonstration
+      // TODO: Replace with real API call to backend
+      // e.g. await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, data)
       await new Promise((resolve) => setTimeout(resolve, 1500));
     } catch (error) {
       console.error("Login failed:", error);
     }
   };
+
   return (
     <div className="flex min-h-screen">
       {/* Left Panel - Geometric Background */}
@@ -106,7 +107,7 @@ const Login = () => {
           </div>
 
           {/* Login Form */}
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
             <div>
               <Label
                 className="block text-[13px] font-medium mb-2 uppercase"
@@ -155,7 +156,9 @@ const Login = () => {
                 className="h-12 px-4 rounded-xl text-[15px] text-gray-900 bg-white placeholder:text-gray-400 border"
                 style={{ borderColor: "var(--warm-gray)" }}
               />
-              <p>{errors.password?.message}</p>
+              <p className="text-red-500 text-[13px] mt-1">
+                {errors.password?.message}
+              </p>
             </div>
 
             <div className="flex items-center">
@@ -178,14 +181,23 @@ const Login = () => {
 
             <Button
               type="submit"
-              className="w-full h-14 rounded-full text-[15px] font-semibold"
+              disabled={isSubmitting}
+              className="w-full h-14 rounded-full text-[15px] font-semibold flex items-center justify-center gap-2"
               style={{
                 backgroundColor: "var(--burgundy)",
                 color: "var(--gold)",
                 boxShadow: "0 2px 8px rgba(139, 21, 56, 0.16)",
+                opacity: isSubmitting ? 0.7 : 1,
               }}
             >
-              Sign In
+              {isSubmitting ? (
+                <>
+                  <Spinner className="size-4" />
+                  Signing In...
+                </>
+              ) : (
+                "Sign In"
+              )}
             </Button>
           </form>
 
@@ -206,9 +218,3 @@ const Login = () => {
   );
 };
 export default Login;
-function signIn(
-  arg0: string,
-  arg1: { redirect: boolean; email: string; password: string },
-) {
-  throw new Error("Function not implemented.");
-}
